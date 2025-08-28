@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nova | 创意设计工作室</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    
+    <!-- 配置Tailwind自定义主题 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#165DFF',
+                        secondary: '#722ED1',
+                        accent: '#FF7D00',
+                        dark: '#1D2129',
+                        light: '#F7F8FA'
+                    },
+                    fontFamily: {
+                        inter: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <!-- 自定义工具类 -->
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            .transition-transform-opacity {
+                transition-property: transform, opacity;
+            }
+        }
+    </style>
+    
+    <style>
+        /* 基础动画定义 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate-fade-in {
+            animation: fadeIn 0.6s ease forwards;
+        }
+        
+        /* 滚动触发动画的元素初始状态 */
+        .scroll-animate {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        /* 自定义滚动条 */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #165DFF;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #0E42D2;
+        }
+    </style>
+</head>
+
+<body class="font-inter bg-light text-dark antialiased">
+    <!-- 导航栏 -->
+    <header id="navbar" class="fixed w-full z-50 transition-all duration-300 bg-transparent">
+        <div class="container mx-auto px-8 md:px-8 lg:px-8">
+            <nav class="flex items-center justify-between h-20">
+                <!-- 品牌Logo -->
+                <a href="#" class="flex items-center space-x-2">
+                    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
+                        <span class="text-white font-bold text-xl">N</span>
+                    </div>
+                    <span class="text-xl font-bold text-white text-shadow">Nova</span>
+                </a>
+                
+                <!-- 桌面导航菜单 -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#home" class="text-white hover:text-accent transition-colors">首页</a>
+                    <a href="#services" class="text-white hover:text-accent transition-colors">服务</a>
+                    <a href="#work" class="text-white hover:text-accent transition-colors">作品</a>
+                    <a href="#about" class="text-white hover:text-accent transition-colors">关于</a>
+                    <a href="#contact" class="text-white hover:text-accent transition-colors">联系</a>
+                </div>
+                
+                <!-- 联系按钮 -->
+                <a href="#contact" class="hidden md:block bg-accent hover:bg-accent/90 text-white px-5 py-2 rounded-full transition-all hover:shadow-lg">
+                    开始合作
+                </a>
+                
+                <!-- 移动端菜单按钮 -->
+                <button id="menu-toggle" class="md:hidden text-white text-2xl">
+                    <i class="fa fa-bars"></i>
+                </button>
+            </nav>
+        </div>
+        
+        <!-- 移动端菜单 -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white shadow-lg absolute w-full">
+            <div class="container mx-auto px-4 py-4 flex flex-col space-y-4">
+                <a href="#home" class="py-2 hover:text-primary transition-colors">首页</a>
+                <a href="#services" class="py-2 hover:text-primary transition-colors">服务</a>
+                <a href="#work" class="py-2 hover:text-primary transition-colors">作品</a>
+                <a href="#about" class="py-2 hover:text-primary transition-colors">关于</a>
+                <a href="#contact" class="py-2 hover:text-primary transition-colors">联系</a>
+                <a href="#contact" class="bg-accent text-white px-5 py-2 rounded-full text-center">
+                    开始合作
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主内容区 - 使用Grid布局 -->
+    <main class="grid grid-cols-1">
+        <!-- 英雄区域 -->
+        <section id="home" class="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-dark to-dark/90 overflow-hidden">
+            <!-- 背景装饰 -->
+            <div class="absolute inset-0 z-0">
+                <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-primary/20 rounded-full filter blur-3xl"></div>
+                <div class="absolute bottom-1/3 right-1/3 w-96 h-96 bg-secondary/20 rounded-full filter blur-3xl"></div>
+                <div class="absolute inset-0 bg-[url('https://picsum.photos/id/1048/1920/1080')] bg-cover bg-center opacity-10"></div>
+            </div>
+            
+            <div class="container mx-auto px-4 md:px-6 lg:px-8 relative z-10">
+                <div class="max-w-4xl mx-auto text-center">
+                    <h1 class="text-[clamp(2.5rem,8vw,5rem)] font-bold text-white leading-tight mb-6 animate-fade-in" style="animation-delay: 0.1s">
+                        创意设计<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">塑造品牌未来</span>
+                    </h1>
+                    <p class="text-[clamp(1rem,3vw,1.25rem)] text-gray-300 mb-10 max-w-2xl mx-auto animate-fade-in" style="animation-delay: 0.3s">
+                        我们是一家充满激情的创意设计工作室，专注于品牌策略、视觉设计和数字体验，
+                        为您的品牌打造独特而令人难忘的形象。
+                    </p>
+                    <div class="flex flex-col sm:flex-row justify-center gap-4 animate-fade-in" style="animation-delay: 0.5s">
+                        <a href="#work" class="bg-gradient-to-r from-primary to-secondary hover:opacity-90 text-white px-8 py-3 rounded-full transition-all hover:shadow-lg font-medium">
+                            查看作品
+                        </a>
+                        <a href="#contact" class="bg-white/10 backdrop-blur-sm hover:bg-white/20 text-white border border-white/30 px-8 py-3 rounded-full transition-all font-medium">
+                            联系我们
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 滚动指示器 -->
+            <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 text-white animate-bounce">
+                <i class="fa fa-angle-down text-2xl"></i>
+            </div>
+        </section>
+
+        <!-- 服务区域 - 使用Grid布局 -->
+        <section id="services" class="py-20 bg-white">
+            <div class="container mx-auto px-4 md:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-16 scroll-animate">
+                    <span class="text-primary font-medium">我们的服务</span>
+                    <h2 class="text-[clamp(1.8rem,5vw,3rem)] font-bold mt-2 mb-4">为品牌提供全方位创意解决方案</h2>
+                    <p class="text-gray-600">我们专注于将创意理念转化为令人印象深刻的视觉体验，帮助品牌在竞争激烈的市场中脱颖而出。</p>
+                </div>
+                
+                <!-- 服务卡片网格 - 核心Grid布局 -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- 服务卡片1 -->
+                    <div class="bg-light rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 scroll-animate" style="animation-delay: 0.1s">
+                        <div class="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-6">
+                            <i class="fa fa-paint-brush text-primary text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">品牌视觉设计</h3>
+                        <p class="text-gray-600 mb-6">打造独特的品牌标识、视觉系统和品牌指南，建立一致且有辨识度的品牌形象。</p>
+                        <a href="#" class="text-primary font-medium flex items-center group">
+                            了解更多
+                            <i class="fa fa-arrow-right ml-2 group-hover:ml-3 transition-all"></i>
+                        </a>
+                    </div>
+                    
+                    <!-- 服务卡片2 -->
+                    <div class="bg-light rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 scroll-animate" style="animation-delay: 0.2s">
+                        <div class="w-14 h-14 bg-secondary/10 rounded-xl flex items-center justify-center mb-6">
+                            <i class="fa fa-desktop text-secondary text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">网站与UI设计</h3>
+                        <p class="text-gray-600 mb-6">设计直观易用的网站和应用界面，结合美学与功能性，提供卓越的用户体验。</p>
+                        <a href="#" class="text-secondary font-medium flex items-center group">
+                            了解更多
+                            <i class="fa fa-arrow-right ml-2 group-hover:ml-3 transition-all"></i>
+                        </a>
+                    </div>
+                    
+                    <!-- 服务卡片3 -->
+                    <div class="bg-light rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 scroll-animate" style="animation-delay: 0.3s">
+                        <div class="w-14 h-14 bg-accent/10 rounded-xl flex items-center justify-center mb-6">
+                            <i class="fa fa-camera text-accent text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">摄影与视觉内容</h3>
+                        <p class="text-gray-600 mb-6">创作高质量的产品摄影、品牌形象摄影和视觉内容，增强品牌故事的表达力。</p>
+                        <a href="#" class="text-accent font-medium flex items-center group">
+                            了解更多
+                            <i class="fa fa-arrow-right ml-2 group-hover:ml-3 transition-all"></i>
+                        </a>
+                    </div>
+                    
+                    <!-- 服务卡片4 -->
+                    <div class="bg-light rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 scroll-animate" style="animation-delay: 0.4s">
+                        <div class="w-14 h-14 bg-green-100 rounded-xl flex items-center justify-center mb-6">
+                            <i class="fa fa-bullhorn text-green-600 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">营销与广告创意</h3>
+                        <p class="text-gray-600 mb-6">开发引人入胜的广告创意和营销材料，帮助品牌有效传达信息并吸引目标受众。</p>
+                        <a href="#" class="text-green-600 font-medium flex items-center group">
+                            了解更多
+                            <i class="fa fa-arrow-right ml-2 group-hover:ml-3 transition-all"></i>
+                        </a>
+                    </div>
+                    
+                    <!-- 服务卡片5 -->
+                    <div class="bg-light rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 scroll-animate" style="animation-delay: 0.5s">
+                        <div class="w-14 h-14 bg-purple-100 rounded-xl flex items-center justify-center mb-6">
+                            <i class="fa fa-video-camera text-purple-600 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">视频与动画制作</h3>
+                        <p class="text-gray-600 mb-6">制作专业的品牌视频、产品演示和动画内容，以动态方式展示品牌价值。</p>
+                        <a href="#" class="text-purple-600 font-medium flex items-center group">
+                            了解更多
+                            <i class="fa fa-arrow-right ml-2 group-hover:ml-3 transition-all"></i>
+                        </a>
+                    </div>
+                    
+                    <!-- 服务卡片6 -->
+                    <div class="bg-light rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 scroll-animate" style="animation-delay: 0.6s">
+                        <div class="w-14 h-14 bg-red-100 rounded-xl flex items-center justify-center mb-6">
+                            <i class="fa fa-line-chart text-red-600 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">品牌策略咨询</h3>
+                        <p class="text-gray-600 mb-6">提供品牌定位、市场分析和策略规划，帮助品牌明确方向并实现可持续增长。</p>
+                        <a href="#" class="text-red-600 font-medium flex items-center group">
+                            了解更多
+                            <i class="fa fa-arrow-right ml-2 group-hover:ml-3 transition-all"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 作品展示区 - 使用Grid布局 -->
+        <section id="work" class="py-20 bg-gray-50">
+            <div class="container mx-auto px-4 md:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 scroll-animate">
+                    <div class="max-w-2xl">
+                        <span class="text-primary font-medium">精选作品</span>
+                        <h2 class="text-[clamp(1.8rem,5vw,3rem)] font-bold mt-2 mb-4">我们的创意案例</h2>
+                        <p class="text-gray-600">探索我们为各行业客户打造的成功案例，每一个项目都融合了创新思维和专业执行。</p>
+                    </div>
+                    <a href="#" class="mt-6 md:mt-0 inline-flex items-center text-primary font-medium group">
+                        查看全部作品
+                        <i class="fa fa-long-arrow-right ml-2 group-hover:ml-3 transition-all"></i>
+                    </a>
+                </div>
+                
+                <!-- 作品网格 - 核心Grid布局 -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- 作品1 -->
+                    <div class="group relative overflow-hidden rounded-xl scroll-animate" style="animation-delay: 0.1s">
+                        <img src="https://picsum.photos/id/1073/800/1000" alt="品牌重塑项目" class="w-full h-80 object-cover object-center transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-dark/80 via-dark/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                            <span class="text-accent text-sm font-medium">品牌重塑</span>
+                            <h3 class="text-white text-xl font-bold mt-1">Aurora 品牌视觉升级</h3>
+                            <p class="text-gray-200 text-sm mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">为科技初创公司打造现代简约的品牌形象</p>
+                        </div>
+                    </div>
+                    
+                    <!-- 作品2 -->
+                    <div class="group relative overflow-hidden rounded-xl scroll-animate" style="animation-delay: 0.2s">
+                        <img src="https://picsum.photos/id/1048/800/1000" alt="网站设计项目" class="w-full h-80 object-cover object-center transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-dark/80 via-dark/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                            <span class="text-accent text-sm font-medium">网站设计</span>
+                            <h3 class="text-white text-xl font-bold mt-1">Lumina 电商平台</h3>
+                            <p class="text-gray-200 text-sm mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">高端家具品牌电商网站设计与开发</p>
+                        </div>
+                    </div>
+                    
+                    <!-- 作品3 -->
+                    <div class="group relative overflow-hidden rounded-xl scroll-animate" style="animation-delay: 0.3s">
+                        <img src="https://picsum.photos/id/1059/800/1000" alt="包装设计项目" class="w-full h-80 object-cover object-center transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-dark/80 via-dark/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                            <span class="text-accent text-sm font-medium">包装设计</span>
+                            <h3 class="text-white text-xl font-bold mt-1">Terra 有机食品包装</h3>
+                            <p class="text-gray-200 text-sm mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">环保理念的有机食品系列包装设计</p>
+                        </div>
+                    </div>
+                    
+                    <!-- 作品4 -->
+                    <div class="group relative overflow-hidden rounded-xl scroll-animate" style="animation-delay: 0.4s">
+                        <img src="https://picsum.photos/id/1060/800/1000" alt="移动应用设计" class="w-full h-80 object-cover object-center transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-dark/80 via-dark/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                            <span class="text-accent text-sm font-medium">UI/UX设计</span>
+                            <h3 class="text-white text-xl font-bold mt-1">Vita 健康追踪应用</h3>
+                            <p class="text-gray-200 text-sm mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">健康管理应用的用户界面与体验设计</p>
+                        </div>
+                    </div>
+                    
+                    <!-- 作品5 -->
+                    <div class="group relative overflow-hidden rounded-xl scroll-animate" style="animation-delay: 0.5s">
+                        <img src="https://picsum.photos/id/1062/800/1000" alt="广告 campaign" class="w-full h-80 object-cover object-center transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-dark/80 via-dark/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                            <span class="text-accent text-sm font-medium">广告创意</span>
+                            <h3 class="text-white text-xl font-bold mt-1">Breeze 夏季 campaign</h3>
+                            <p class="text-gray-200 text-sm mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">饮料品牌夏季推广活动的创意与执行</p>
+                        </div>
+                    </div>
+                    
+                    <!-- 作品6 -->
+                    <div class="group relative overflow-hidden rounded-xl scroll-animate" style="animation-delay: 0.6s">
+                        <img src="https://picsum.photos/id/1068/800/1000" alt="空间设计" class="w-full h-80 object-cover object-center transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-dark/80 via-dark/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                            <span class="text-accent text-sm font-medium">空间设计</span>
+                            <h3 class="text-white text-xl font-bold mt-1">Nexus 办公空间</h3>
+                            <p class="text-gray-200 text-sm mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">科技公司办公空间的品牌化设计</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 关于我们 - 使用Grid布局 -->
+        <section id="about" class="py-20 bg-white">
+            <div class="container mx-auto px-4 md:px-6 lg:px-8">
+                <!-- 两列Grid布局 -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <!-- 左侧图片 -->
+                    <div class="relative scroll-animate">
+                        <div class="relative z-10 rounded-2xl overflow-hidden shadow-xl">
+                            <img src="https://picsum.photos/id/1074/800/1000" alt="我们的团队" class="w-full h-auto">
+                        </div>
+                        <div class="absolute -bottom-6 -right-6 w-64 h-64 bg-primary/10 rounded-full -z-10"></div>
+                        <div class="absolute -top-6 -left-6 w-40 h-40 bg-secondary/10 rounded-full -z-10"></div>
+                        
+                        <!-- 数据卡片 -->
+                        <div class="absolute -bottom-10 right-10 bg-white p-6 rounded-xl shadow-lg z-20 max-w-xs">
+                            <div class="grid grid-cols-3 gap-4 text-center">
+                                <div>
+                                    <div class="text-2xl font-bold text-primary">8+</div>
+                                    <div class="text-sm text-gray-600">年经验</div>
+                                </div>
+                                <div>
+                                    <div class="text-2xl font-bold text-secondary">150+</div>
+                                    <div class="text-sm text-gray-600">成功项目</div>
+                                </div>
+                                <div>
+                                    <div class="text-2xl font-bold text-accent">50+</div>
+                                    <div class="text-sm text-gray-600">满意客户</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 右侧内容 -->
+                    <div class="scroll-animate" style="animation-delay: 0.2s">
+                        <span class="text-primary font-medium">关于我们</span>
+                        <h2 class="text-[clamp(1.8rem,5vw,3rem)] font-bold mt-2 mb-6">充满激情的创意团队</h2>
+                        <p class="text-gray-600 mb-6">Nova 成立于2015年，是一家由设计师、策略家和技术专家组成的创意工作室。我们相信创意的力量能够改变品牌的命运，每一个项目对我们来说都是一次创造独特价值的机会。</p>
+                        <p class="text-gray-600 mb-8">我们的工作方式基于深度理解客户需求和市场环境，结合创新思维和专业技能，为品牌打造真正有影响力的解决方案。</p>
+                        
+                        <!-- 价值观 -->
+                        <div class="space-y-4 mb-8">
+                            <div class="flex items-start">
+                                <div class="mt-1 mr-4 w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                                    <i class="fa fa-check text-primary text-sm"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold">创新思维</h4>
+                                    <p class="text-gray-600 text-sm">不断挑战常规，探索新的创意可能性</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="mt-1 mr-4 w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                                    <i class="fa fa-check text-primary text-sm"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold">客户合作</h4>
+                                    <p class="text-gray-600 text-sm">与客户建立伙伴关系，共同实现品牌目标</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="mt-1 mr-4 w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                                    <i class="fa fa-check text-primary text-sm"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold">卓越品质</h4>
+                                    <p class="text-gray-600 text-sm">对细节的极致追求，确保每一个作品的品质</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <a href="#contact" class="inline-block bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full transition-all hover:shadow-lg">
+                            加入我们的创意之旅
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 团队展示 - Grid布局 -->
+                <div class="mt-24 scroll-animate">
+                    <div class="text-center max-w-3xl mx-auto mb-12">
+                        <h2 class="text-[clamp(1.5rem,4vw,2.5rem)] font-bold mb-4">认识我们的团队</h2>
+                        <p class="text-gray-600">由创意专业人士组成的多元化团队，共同致力于打造卓越的品牌体验</p>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <!-- 团队成员1 -->
+                        <div class="group scroll-animate" style="animation-delay: 0.1s">
+                            <div class="relative overflow-hidden rounded-xl mb-4">
+                                <img src="https://picsum.photos/id/1012/400/500" alt="团队成员" class="w-full h-80 object-cover object-center transition-transform duration-500 group-hover:scale-110">
+                                <div class="absolute inset-0 bg-primary/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center space-x-4">
+                                    <a href="#" class="text-white hover:text-accent transition-colors"><i class="fa fa-linkedin"></i></a>
+                                    <a href="#" class="text-white hover:text-accent transition-colors"><i class="fa fa-twitter"></i></a>
+                                    <a href="#" class="text-white hover:text-accent transition-colors"><i class="fa fa-behance"></i></a>
+                                </div>
+                            </div>
+                            <h3 class="font-bold text-lg">林小雨</h3>
+                            <p class="text-primary">创意总监</p>
+                        </div>
+                        
+                        <!-- 团队成员2 -->
+                        <div class="group scroll-animate" style="animation-delay: 0.2s">
+                            <div class="relative overflow-hidden rounded-xl mb-4">
+                                <img src="https://picsum.photos/id/1005/400/500" alt="团队成员" class="w-full h-80 object-cover object-center transition-transform duration-500 group-hover:scale-110">
+                                <div class="absolute inset-0 bg-primary/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center space-x-4">
+                                    <a href="#" class="text-white hover:text-accent transition-colors"><i class="fa fa-linkedin"></i></a>
+                                    <a href="#" class="text-white hover:text-accent transition-colors"><i class="fa fa-twitter"></i></a>
+                                    <a href="#" class="text-white hover:text-accent transition-colors"><i class="fa fa-behance"></i></a>
+                                </div>
+                            </div>
+                            <h3 class="font-bold text-lg">张明哲</h3>
+                            <p class="text-primary">品牌策略师</p>
+                        </div>
+                        
+                        <!-- 团队成员3 -->
+                        <div class="group scroll-animate" style="animation-delay: 0.3s">
+                            <div class="relative overflow-hidden rounded-xl mb-4">
+                                <img src="https://picsum.photos/id/1001/400/500" alt="团队成员" class="w-full h-80 object-cover object-center transition-transform duration-500 group-hover:scale-110">
+                                <div class="absolute inset-0 bg-primary/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center space-x-4">
+                                    <a href="#" class="text-white hover:text-accent transition-colors"><i class="fa fa-linkedin"></i></a>
+                                    <a href="#" class="text-white hover:text-accent transition-colors"><i class="fa fa-twitter"></i></a>
+                                    <a href="#" class="text-white hover:text-accent transition-colors"><i class="fa fa-behance"></i></a>
+                                </div>
+                            </div>
+                            <h3 class="font-bold text-lg">王佳琪</h3>
+                            <p class="text-primary">UI/UX设计师</p>
+                        </div>
+                        
+                        <!-- 团队成员4 -->
+                        <div class="group scroll-animate" style="animation-delay: 0.4s">
+                            <div class="relative overflow-hidden rounded-xl mb-4">
+                                <img src="https://picsum.photos/id/1074/400/500" alt="团队成员" class="w-full h-80 object-cover object-center transition-transform duration-500 group-hover:scale-110">
+                                <div class="absolute inset-0 bg-primary/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center space-x-4">
+                                    <a href="#" class="text-white hover:text-accent transition-colors"><i class="fa fa-linkedin"></i></a>
+                                    <a href="#" class="text-white hover:text-accent transition-colors"><i class="fa fa-twitter"></i></a>
+                                    <a href="#" class="text-white hover:text-accent transition-colors"><i class="fa fa-behance"></i></a>
+                                </div>
+                            </div>
+                            <h3 class="font-bold text-lg">李浩然</h3>
+                            <p class="text-primary">前端开发</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 数据统计与客户评价 - Grid布局 -->
+        <section class="py-20 bg-gradient-to-br from-primary/5 to-secondary/5">
+            <div class="container mx-auto px-4 md:px-6 lg:px-8">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                    <!-- 左侧数据统计 -->
+                    <div class="scroll-animate">
+                        <span class="text-primary font-medium">我们的成就</span>
+                        <h2 class="text-[clamp(1.8rem,5vw,3rem)] font-bold mt-2 mb-8">用数据说话</h2>
+                        
+                        <div class="grid grid-cols-2 gap-6 mb-8">
+                            <div class="bg-white p-6 rounded-xl shadow-sm">
+                                <div class="text-4xl font-bold text-primary mb-2 counter">96%</div>
+                                <p class="text-gray-600">客户满意度</p>
+                            </div>
+                            <div class="bg-white p-6 rounded-xl shadow-sm">
+                                <div class="text-4xl font-bold text-secondary mb-2 counter">24</div>
+                                <p class="text-gray-600">行业奖项</p>
+                            </div>
+                            <div class="bg-white p-6 rounded-xl shadow-sm">
+                                <div class="text-4xl font-bold text-accent mb-2 counter">150+</div>
+                                <p class="text-gray-600">完成项目</p>
+                            </div>
+                            <div class="bg-white p-6 rounded-xl shadow-sm">
+                                <div class="text-4xl font-bold text-green-600 mb-2 counter">50+</div>
+                                <p class="text-gray-600">长期合作客户</p>
+                            </div>
+                        </div>
+                        
+                        <!-- 项目完成度图表（已修复） -->
+                        <div class="bg-white p-6 rounded-xl shadow-sm">
+                            <h3 class="font-bold text-lg mb-4">项目完成度统计</h3>
+                            <!-- 新增外层容器控制尺寸 -->
+                            <div class="w-full h-[250px]">
+                                <canvas id="projectChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 右侧客户评价 -->
+                    <div class="scroll-animate" style="animation-delay: 0.2s">
+                        <span class="text-primary font-medium">客户反馈</span>
+                        <h2 class="text-[clamp(1.8rem,5vw,3rem)] font-bold mt-2 mb-8">他们对我们的评价</h2>
+                        
+                        <div class="space-y-6">
+                            <!-- 评价1 -->
+                            <div class="bg-white p-6 rounded-xl shadow-sm">
+                                <div class="flex items-center mb-4">
+                                    <img src="https://picsum.photos/id/1027/100/100" alt="客户头像" class="w-12 h-12 rounded-full object-cover mr-4">
+                                    <div>
+                                        <h4 class="font-bold">陈明亮</h4>
+                                        <p class="text-gray-600 text-sm">科技公司 CEO</p>
+                                    </div>
+                                </div>
+                                <div class="text-yellow-400 mb-3">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                </div>
+                                <p class="text-gray-600">"Nova团队为我们打造的品牌形象超出了预期，他们不仅理解我们的需求，还能提供创新性的解决方案，帮助我们在市场中脱颖而出。"</p>
+                            </div>
+                            
+                            <!-- 评价2 -->
+                            <div class="bg-white p-6 rounded-xl shadow-sm">
+                                <div class="flex items-center mb-4">
+                                    <img src="https://picsum.photos/id/1062/100/100" alt="客户头像" class="w-12 h-12 rounded-full object-cover mr-4">
+                                    <div>
+                                        <h4 class="font-bold">刘梦琪</h4>
+                                        <p class="text-gray-600 text-sm">电商品牌创始人</p>
+                                    </div>
+                                </div>
+                                <div class="text-yellow-400 mb-3">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-half-o"></i>
+                                </div>
+                                <p class="text-gray-600">"与Nova合作非常愉快，他们的设计团队不仅专业，而且响应迅速。重新设计的网站为我们带来了30%的转化率提升，非常值得推荐。"</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 联系我们 - Grid布局 -->
+        <section id="contact" class="py-20 bg-white">
+            <div class="container mx-auto px-4 md:px-6 lg:px-8">
+                <div class="max-w-3xl mx-auto text-center mb-16 scroll-animate">
+                    <span class="text-primary font-medium">联系我们</span>
+                    <h2 class="text-[clamp(1.8rem,5vw,3rem)] font-bold mt-2 mb-4">开始您的创意项目</h2>
+                    <p class="text-gray-600">无论您是需要全新的品牌形象，还是想要升级现有设计，我们都愿意倾听您的需求，为您提供专业的创意解决方案。</p>
+                </div>
+                
+                <!-- 联系表单与信息 - Grid布局 -->
+                <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+                    <!-- 左侧联系信息 -->
+                    <div class="lg:col-span-2 scroll-animate">
+                        <div class="bg-light rounded-2xl p-8 h-full">
+                            <h3 class="text-2xl font-bold mb-6">联系信息</h3>
+                            
+                            <div class="space-y-6">
+                                <div class="flex items-start">
+                                    <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mr-4 flex-shrink-0">
+                                        <i class="fa fa-map-marker text-primary"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold mb-1">地址</h4>
+                                        <p class="text-gray-600">上海市静安区南京西路1266号恒隆广场28楼</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-start">
+                                    <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mr-4 flex-shrink-0">
+                                        <i class="fa fa-phone text-primary"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold mb-1">电话</h4>
+                                        <p class="text-gray-600">+86 21 5888 7777</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-start">
+                                    <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mr-4 flex-shrink-0">
+                                        <i class="fa fa-envelope text-primary"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold mb-1">邮箱</h4>
+                                        <p class="text-gray-600">info@novastudio.com</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-start">
+                                    <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mr-4 flex-shrink-0">
+                                        <i class="fa fa-clock-o text-primary"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold mb-1">工作时间</h4>
+                                        <p class="text-gray-600">周一至周五: 9:00 - 18:00</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-8">
+                                <h4 class="font-bold mb-4">关注我们</h4>
+                                <div class="flex space-x-4">
+                                    <a href="#" class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all">
+                                        <i class="fa fa-weixin"></i>
+                                    </a>
+                                    <a href="#" class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all">
+                                        <i class="fa fa-weibo"></i>
+                                    </a>
+                                    <a href="#" class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all">
+                                        <i class="fa fa-instagram"></i>
+                                    </a>
+                                    <a href="#" class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all">
+                                        <i class="fa fa-behance"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 右侧联系表单 -->
+                    <div class="lg:col-span-3 scroll-animate" style="animation-delay: 0.2s">
+                        <div class="bg-white border border-gray-100 rounded-2xl p-8 shadow-sm">
+                            <form>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                                    <div>
+                                        <label for="name" class="block text-gray-700 font-medium mb-2">姓名</label>
+                                        <input type="text" id="name" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-primary focus:ring focus:ring-primary/20 outline-none transition-all" placeholder="您的姓名">
+                                    </div>
+                                    <div>
+                                        <label for="email" class="block text-gray-700 font-medium mb-2">邮箱</label>
+                                        <input type="email" id="email" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-primary focus:ring focus:ring-primary/20 outline-none transition-all" placeholder="您的邮箱">
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-6">
+                                    <label for="subject" class="block text-gray-700 font-medium mb-2">主题</label>
+                                    <input type="text" id="subject" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-primary focus:ring focus:ring-primary/20 outline-none transition-all" placeholder="咨询主题">
+                                </div>
+                                
+                                <div class="mb-6">
+                                    <label for="message" class="block text-gray-700 font-medium mb-2">留言</label>
+                                    <textarea id="message" rows="5" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-primary focus:ring focus:ring-primary/20 outline-none transition-all resize-none" placeholder="请详细描述您的需求..."></textarea>
+                                </div>
+                                
+                                <button type="submit" class="w-full bg-gradient-to-r from-primary to-secondary hover:opacity-90 text-white px-6 py-3 rounded-lg transition-all hover:shadow-lg font-medium">
+                                    发送消息
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 - Grid布局 -->
+    <footer class="bg-dark text-white pt-16 pb-8">
+        <div class="container mx-auto px-4 md:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-16">
+                <!-- 公司信息 -->
+                <div>
+                    <a href="#" class="flex items-center space-x-2 mb-6">
+                        <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
+                            <span class="text-white font-bold text-xl">N</span>
+                        </div>
+                        <span class="text-xl font-bold text-white">Nova</span>
+                    </a>
+                    <p class="text-gray-400 mb-6">我们是一家充满激情的创意设计工作室，专注于品牌策略、视觉设计和数字体验。</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i class="fa fa-weixin"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i class="fa fa-instagram"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i class="fa fa-behance"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 快速链接 -->
+                <div>
+                    <h4 class="text-lg font-bold mb-6">快速链接</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#home" class="text-gray-400 hover:text-white transition-colors">首页</a></li>
+                        <li><a href="#services" class="text-gray-400 hover:text-white transition-colors">服务</a></li>
+                        <li><a href="#work" class="text-gray-400 hover:text-white transition-colors">作品</a></li>
+                        <li><a href="#about" class="text-gray-400 hover:text-white transition-colors">关于我们</a></li>
+                        <li><a href="#contact" class="text-gray-400 hover:text-white transition-colors">联系我们</a></li>
+                    </ul>
+                </div>
+                
+                <!-- 服务 -->
+                <div>
+                    <h4 class="text-lg font-bold mb-6">我们的服务</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">品牌视觉设计</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">网站与UI设计</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">摄影与视觉内容</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">营销与广告创意</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">品牌策略咨询</a></li>
+                    </ul>
+                </div>
+                
+                <!-- 订阅 -->
+                <div>
+                    <h4 class="text-lg font-bold mb-6">订阅通讯</h4>
+                    <p class="text-gray-400 mb-4">订阅我们的通讯，获取最新的设计趋势和案例分享。</p>
+                    <form class="mb-4">
+                        <div class="flex">
+                            <input type="email" placeholder="您的邮箱地址" class="px-4 py-2 rounded-l-lg w-full bg-gray-800 border border-gray-700 text-white focus:outline-none focus:border-primary">
+                            <button type="submit" class="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-r-lg transition-colors">
+                                <i class="fa fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </form>
+                    <p class="text-gray-500 text-sm">我们尊重您的隐私，不会向第三方分享您的信息。</p>
+                </div>
+            </div>
+            
+            <hr class="border-gray-800 mb-8">
+            
+            <!-- 版权信息 -->
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-500 text-sm mb-4 md:mb-0">© 2023 Nova 创意设计工作室. 保留所有权利.</p>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-500 hover:text-white text-sm transition-colors">隐私政策</a>
+                    <a href="#" class="text-gray-500 hover:text-white text-sm transition-colors">服务条款</a>
+                    <a href="#" class="text-gray-500 hover:text-white text-sm transition-colors">Cookie 政策</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 返回顶部按钮 -->
+    <button id="back-to-top" class="fixed bottom-8 right-8 bg-primary hover:bg-primary/90 text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg opacity-0 invisible transition-all z-50">
+        <i class="fa fa-arrow-up"></i>
+    </button>
+
+    <!-- JavaScript -->
+    <script>
+        // 导航栏滚动效果
+        const navbar = document.getElementById('navbar');
+        const backToTop = document.getElementById('back-to-top');
+        
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 50) {
+                navbar.classList.add('bg-dark/90', 'backdrop-blur-md', 'shadow-md');
+                navbar.classList.remove('bg-transparent');
+                
+                backToTop.classList.remove('opacity-0', 'invisible');
+                backToTop.classList.add('opacity-100', 'visible');
+            } else {
+                navbar.classList.remove('bg-dark/90', 'backdrop-blur-md', 'shadow-md');
+                navbar.classList.add('bg-transparent');
+                
+                backToTop.classList.add('opacity-0', 'invisible');
+                backToTop.classList.remove('opacity-100', 'visible');
+            }
+            
+            // 滚动动画
+            const scrollElements = document.querySelectorAll('.scroll-animate');
+            scrollElements.forEach(el => {
+                const elementTop = el.getBoundingClientRect().top;
+                const elementVisible = 150;
+                if (elementTop < window.innerHeight - elementVisible) {
+                    el.classList.add('animate-fade-in');
+                }
+            });
+        });
+        
+        // 移动端菜单
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        menuToggle.addEventListener('click', function() {
+            mobileMenu.classList.toggle('hidden');
+            const icon = menuToggle.querySelector('i');
+            if (mobileMenu.classList.contains('hidden')) {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            } else {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            }
+        });
+        
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                // 关闭移动菜单（如果打开）
+                if (!mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.add('hidden');
+                    const icon = menuToggle.querySelector('i');
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // 返回顶部
+        backToTop.addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // 项目完成度图表（修复版）
+        function initProjectChart() {
+            const chartContainer = document.getElementById('projectChart');
+            if (!chartContainer) return;
+
+            // 当图表容器进入视口时才初始化
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const ctx = chartContainer.getContext('2d');
+                        new Chart(ctx, {
+                            type: 'doughnut',
+                            data: {
+                                labels: ['品牌设计', '网站设计', '包装设计', 'UI/UX设计', '其他'],
+                                datasets: [{
+                                    data: [35, 25, 15, 20, 5],
+                                    backgroundColor: [
+                                        '#165DFF',
+                                        '#722ED1',
+                                        '#FF7D00',
+                                        '#00B42A',
+                                        '#86909C'
+                                    ],
+                                    borderWidth: 0
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false, // 允许图表适应容器尺寸
+                                cutout: '70%',
+                                plugins: {
+                                    legend: {
+                                        position: 'bottom',
+                                        labels: {
+                                            padding: 20,
+                                            boxWidth: 12,
+                                            font: {
+                                                size: 12 // 优化图例字体大小
+                                            }
+                                        }
+                                    }
+                                },
+                                layout: {
+                                    padding: 10 // 内部边距，避免内容贴边
+                                }
+                            }
+                        });
+                        observer.unobserve(entry.target); // 只初始化一次
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            observer.observe(chartContainer);
+        }
+
+        // 页面加载完成后初始化图表监听
+        window.addEventListener('load', initProjectChart);
+        
+        // 数字计数动画
+        const animateCounters = () => {
+            const counters = document.querySelectorAll('.counter');
+            counters.forEach(counter => {
+                const target = +counter.innerText.replace(/\+/g, '').replace(/,/g, '');
+                const duration = 2000; // 动画持续时间（毫秒）
+                const stepTime = 20; // 每步时间间隔（毫秒）
+                const totalSteps = duration / stepTime;
+                const stepSize = target / totalSteps;
+                let current = 0;
+                
+                const updateCounter = () => {
+                    current += stepSize;
+                    if (current < target) {
+                        counter.innerText = Math.ceil(current) + (target > 100 ? '+' : '');
+                        setTimeout(updateCounter, stepTime);
+                    } else {
+                        counter.innerText = target + (target > 100 ? '+' : '');
+                    }
+                };
+                
+                updateCounter();
+            });
+        };
+        
+        // 当统计部分进入视图时触发计数动画
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateCounters();
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        const statsSection = document.querySelector('.counter').closest('section');
+        if (statsSection) {
+            observer.observe(statsSection);
+        }
+    </script>
+</body>
+</html>
