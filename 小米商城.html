@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小米商城</title>
+    <style>
+        /* 基础样式设置 */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            margin: 0;
+            font: 14px / 1.5 "Helvetica Neue", Helvetica, Arial, "Microsoft Yahei", "Hiragino Sans GB", "Heiti SC", "WenQuanYi Micro Hei", sans-serif;
+            color: #333;
+            background-color: #fff;
+            min-width: 1226px;
+            /* 新增：抗锯齿，让文字更清晰，避免模糊显小 */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .header {
+            display: block;
+            unicode-bidi: isolate;
+        }
+
+        /* 顶部导航栏样式 */
+        .site-topbar {
+            position: relative;
+            z-index: 30;
+            height: 40px;
+            font-size: 12px;
+            color: #b0b0b0;
+            background: #333;
+        }
+
+        .container {
+            width: 1226px;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        .site-topbar .topbar-nav {
+            float: left;
+            height: 40px;
+            line-height: 40px;
+        }
+
+        .site-topbar a {
+            font-size: 12px;
+            color: #b0b0b0;
+            line-height: 40px;
+            display: inline-block;
+        }
+
+        a, a:hover {
+            text-decoration: none;
+        }
+
+        /* 购物车样式 */
+        .site-topbar .topbar-cart {
+            position: relative;
+            float: right;
+            width: 120px;
+            height: 40px;
+            margin-left: 15px;
+            transition: all .2s;
+            font-size: 12px;
+            text-align: center;
+            background: #424242;
+        }
+
+        .site-topbar .topbar-cart a {
+            width: 100%;
+        }
+
+        /* 用户信息样式 */
+        .site-topbar .topbar-info {
+            position: relative;
+            float: right;
+            height: 40px;
+            line-height: 40px;
+        }
+
+        .sep {
+            margin: 0 .25em;
+            font-family: sans-serif;
+        }
+
+        .site-topbar .sep {
+            margin: 0 .3em;
+            color: #424242;
+        }
+
+        .site-topbar .topbar-info .sep {
+            margin: 0 2px;
+            color: #424242;
+        }
+
+        .iconfont-cart:before {
+            font-family: "iconfont" !important;
+            font-size: 16px;
+            font-style: normal;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            content: "\E60C";
+        }
+
+        .site-topbar .topbar-info a     {
+            padding: 0 5px;
+            font-size: 12px;
+        }
+
+        /* 交互效果 */
+        .site-topbar a:hover {
+            color: #fff;
+        }
+
+        .site-topbar .topbar-cart:hover {
+            background: #fff;
+        }
+
+        .site-topbar .topbar-cart:hover a {
+            color: #ff6700; /* 小米橙色主色 */
+        }
+        .site-topbar .topbar-cart .cart-svg-icon {
+            width: 20px;          /* 图标宽度（和12px文字匹配，视觉协调） */
+            height: 16px;         /* 图标高度（保持宽高比，避免变形） */
+            margin-right: 6px;    /* 图标与文字的间距（不贴紧，更美观） */
+            vertical-align: middle; /* 让图标和文字垂直居中（关键！避免上下错位） */
+  /* 让图标默认颜色和文字一致（#b0b0b0），若SVG本身颜色不对可加滤镜调整 */
+            filter: invert(70%) grayscale(100%); /* 可选：将黑色SVG转为浅灰色（#b0b0b0） */
+        }
+/* 新增：购物车 hover 时，图标颜色同步变橙色（和文字匹配） */
+        .site-topbar .topbar-cart:hover .cart-svg-icon {
+            filter: invert(50%) sepia(100%) saturate(1000%) hue-rotate(350deg); /* 转为小米橙色 #ff6700 */
+        }
+        .sub-header{
+            height: 100px;
+        }
+        .sub-header .logo{
+            width : 234px;
+            float: left;
+        }
+        .sub-header .logo a{
+            margin-top: 22px;
+            display : inline-block;
+        }
+        .sub-header .logo a img{
+            height: 56px;
+            width: 56px
+        }
+        .sub-ht{
+            height: 100px;
+        }
+        .sub-header .menu-list{
+            float: left;
+            line-height: 100px;
+        }
+        .sub-header .menu-list a{
+            padding: 0 10px;
+            color: #333;
+            font-size: 16px;
+            text-decoration: none;
+        }
+        .sub-header .menu-list a:hover{
+            color: #ff6700;
+        }
+        .search {
+            float: right;
+            margin-top: 25px;
+            width: 296px;
+        }
+        .search-form {
+            position: relative;
+            width: 296px;
+            height: 50px;
+        }
+        .search-text {
+            position: absolute;
+            top: 0;
+            right: 51px;
+            width: 245px;
+            height: 50px;
+            padding: 0 10px;
+            border: 1px solid #e0e0e0;
+            font-size: 14px;
+            line-height: 50px;
+            outline: none;
+            transition: all 0.2s;
+        }
+        .search-text:focus {
+            border-color: #ff6700;
+        }
+        .search-btn {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 52px;
+            height: 52px;
+            border: 1px solid #e0e0e0;
+            background-color: #fff;
+            color: #616161;
+            font-size: 24px;
+            outline: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .search-btn:hover {
+            background-color: #ff6700;
+            color: #fff;
+            border-color: #ff6700;
+        }
+
+        .clearfix::after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+        .search-photo{
+            width: 24px;
+            height: 24px;
+            margin-top: 10px;
+        }
+
+        .sidebar {
+            width: 234px;
+            float: left;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            height: 460px; /* 可根据轮播图高度调整 */
+        }
+
+        .slider .sidebar ul{
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .slider .sidebar ul li{
+
+            padding: 15px 40px 15px 20px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            position: relative;
+            list-style: none;
+        }
+        .slider .sidebar ul li::after {
+            content: ""; /* 伪元素必须有content属性 */
+            width: 8px;
+            height: 8px;
+            border-top: 2px solid #fff; /* 箭头颜色（根据你的侧边栏文字颜色调整） */
+            border-right: 2px solid #fff;
+            /* 箭头定位：靠右居中 */
+            position: absolute;
+            right: 15px; /* 距离右侧的距离 */
+            top: 50%; /* 垂直居中 */
+            transform: translateY(-50%) rotate(45deg); /* 垂直居中+旋转（仅方案1需要） */
+        }
+        .slider .sidebar ul li:hover{
+            background-color: #ff6700;
+        }
+        .slider .sidebar ul li:hover a{
+            color: #fff;
+        }
+        .slider .sidebar ul li a{
+            font-size: 14px;
+            color: #333;
+        }
+        .slider .sidebar ul li a:hover{
+            color: #ff6700;
+        }
+
+        .slider .sd-img  {
+            float: left;
+            width: 992px;
+            height: 460px;
+            overflow: hidden;
+            position: relative;
+        }
+        .slider .sd-img img {
+            width: 100%; /* 图片宽度=容器宽度 */
+            height: 100%; /* 图片高度=容器高度 */
+            object-fit: cover; /* 保持比例，裁剪多余部分（避免变形） */
+        }
+        .slider .sd-img::after{
+            content: "";
+            position: absolute;
+            width:16px;
+            height: 16px;
+            border-top:2px solid #fff;
+            border-right:2px solid #fff;
+            right:20px;
+            top:50%;
+            transform:translateY(-50%) rotate(45deg)
+        }
+        .slider .sd-img::before{
+            content: "";
+            position: absolute;
+            width:16px;
+            height: 16px;
+            border-top:2px solid #fff;
+            border-right:2px solid #fff;
+            left:20px;
+            top:50%;
+            transform:translateY(-50%) rotate(225deg)
+        }
+        .grid-container{
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap : 10px;
+            margin: 10px 0;
+            width: 100%;
+            padding: 0;
+            border: none;
+        }
+        .grid-container img{
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+        .grid-container .item1{
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            background-color: #e0e0e0;
+            gap: 1px;
+            padding: 1px;
+            width: 299px;
+            height: 160.85px;
+        }
+        .grid-container .item1-1{
+            background-color: rgba(0, 0, 0, 0.6);
+        }
+        .grid-container .item1-1 img{
+            width :30px;
+            height: 30px;
+            display: block;
+            margin: 10px auto;
+            filter: brightness(0.7); /* 降低亮度实现暗白色效果 */
+            transition: filter 0.3s ease; /* 平滑过渡效果 */
+        }
+        .grid-container .item1-1:hover img{
+            filter: brightness(1); /* 鼠标悬停时恢复正常亮度 */
+        }
+        .grid-container .item1-1 span{
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start; /* 修改为 flex-start 让文字上移 */
+            font-size: 12px;
+            filter: brightness(0.7);
+            transition: fiter 0.3s ease;
+
+        }
+        .grid-container .item1-1:hover span{
+            filter: brightness(1);
+        }
+
+
+
+    </style>
+    
+<body>
+    <div class="header">
+        <div class="site-topbar">
+            <div class="container">
+                <div class="topbar-nav">
+                    <a href="//www.mi.com/">小米官网</a><span class="sep">|</span>
+                    <a href="//www.mi.com/">小米商城</a><span class="sep">|</span>
+                    <a href="//www.mi.com/">小米澎湃OS</a><span class="sep">|</span>
+                    <a href="//www.mi.com/">小米汽车</a><span class="sep">|</span>
+                    <a href="//www.mi.com/">云服务</a><span class="sep">|</span>
+                    <a href="//www.mi.com/">IoT</a><span class="sep">|</span>
+                    <a href="//www.mi.com/">有品</a><span class="sep">|</span>
+                    <a href="//www.mi.com/">小爱开放平台</a><span class="sep">|</span>
+                    <a href="//www.mi.com/">资质证照</a><span class="sep">|</span>
+                    <a href="//www.mi.com/">协议规则</a><span class="sep">|</span>
+                    <a href="//www.mi.com/">下载app</a><span class="sep">|</span>
+                    <a href="//www.mi.com/">Select location</a>
+                </div>
+
+                <div id="J_minCartTrigger" class="topbar-cart">
+                    <a href="#">
+                        <img src="icon/icon-cart.svg" alt="购物车图标" class="cart-svg-icon">购物车 (0)
+                    </a>
+                </div>
+
+                <div id="J_siteUserInfo" class="topbar-info">
+                    <a href="//www.mi.com/">登录</a><span class="sep">|</span>
+                    <a href="//www.mi.com/">注册</a><span class="sep">|</span>
+                    <a href="//www.mi.com/">消息通知</a>
+                </div>
+            </div>
+        </div>
+        <div class="sub-header">
+            <div class="container">
+                <div class="logo">
+                    <a href="//www.mi.com/">
+                        <img src="icon/小米logo.png" alt="小米图标" class="logo-img">
+                    </a>
+                </div>
+                <div class="menu-list sub-ht">
+                    <a href="#" data-index="0" class="nav-item">Xiaomi手机</a>  
+                    <a href="#" data-index="1" class="nav-item">REDMI手机</a>
+                    <a href="#" data-index="2" class="nav-item">电视</a>
+                    <a href="#" data-index="3" class="nav-item">笔记本</a>
+                    <a href="#" data-index="4" class="nav-item">平板</a>
+                    <a href="#" data-index="5" class="nav-item">家电</a>
+                    <a href="#" data-index="6" class="nav-item">路由器</a>
+                    <a href="#" data-index="7" class="nav-item">服务中心</a>
+                    <a href="#" data-index="8" class="nav-item">社区</a>
+                </div>
+                <div class="search">
+                    <div class="search-form">
+                        <input type="text" class="search-text" placeholder="搜索商品">
+                        <button class="search-btn">
+                            <img src="icon/搜索.png" alt="" class="search-photo">
+                        </button>
+                        
+                        <div class="search-hot-words">
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            
+        </div>
+    </div>
+    <div class="slider">
+        <div class="container">
+            <div class="sidebar">
+                <ul>
+                    <li>手机</li>
+                    <li>电视</li>
+                    <li>家电</li>
+                    <li>笔记本 平板 显示器</li>
+                    <li>出行 穿戴</li>
+                    <li>耳机 音箱</li>
+                    <li>健康 儿童</li>
+                    <li>生活 箱包</li>
+                    <li>智能 路由器</li>
+                    <li>电源 配件</li>
+                </ul>
+            </div>
+            <div class="sd-img">
+                <img src="icon/小米耳机.png" alt="">
+            </div>
+        </div>
+    </div>
+    <div class="slider2">
+        <div class="container">
+            <div class="grid-container">
+            <div class="item1">
+                <div class="item1-1">
+                    <img src="icon/时钟图标.png" alt="">
+                    <span>保障服务</span>
+                </div>
+                <div class="item1-1">
+                    <img src="icon/时钟图标.png" alt="">
+                    <span>保障服务</span>
+                </div>
+                <div class="item1-1">
+                    <img src="icon/时钟图标.png" alt="">
+                    <span>保障服务</span>
+                </div>
+                <div class="item1-1">
+                    <img src="icon/时钟图标.png" alt="">
+                    <span>保障服务</span>
+                </div>
+                <div class="item1-1">
+                    <img src="icon/时钟图标.png" alt="">
+                    <span>保障服务</span>
+                </div>
+                <div class="item1-1">
+                    <img src="icon/时钟图标.png" alt="">
+                    <span>保障服务</span>
+                </div>
+            </div>
+            <div class="item2">
+                <img src="icon/xiaomi15.png" alt="">
+            </div>
+            <div class="item3">
+                <img src="icon/redme电视.png" alt="">
+            </div>
+            <div class="item4">
+                <img src="icon/小米手表.png" alt="">
+            </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
