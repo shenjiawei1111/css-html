@@ -71,10 +71,64 @@
             font-size: 12px;
             text-align: center;
             background: #424242;
+            cursor: pointer; /* 鼠标悬停显示手型 */
         }
-
+        
         .site-topbar .topbar-cart a {
             width: 100%;
+            height: 100%;
+            display: inline-block;
+            line-height: 40px; /* 文字垂直居中 */
+            color: #b0b0b0; /* 默认文字灰色 */
+            text-decoration: none;
+            transition: color .2s;
+        }
+
+        /* 新增：显示下拉层的类 */
+        .cart-dropdown.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        /* 下拉层样式 */
+        .cart-dropdown {
+            position: absolute; 
+            top: 40px; 
+            right: 0; 
+            width: 316px; 
+            height: 109px; 
+            color: #424242;
+            background: #fff; 
+            border: 1px solid #e0e0e0; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15); 
+            padding: 20px;
+            z-index: 999; 
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px); 
+            transition: all .3s ease;
+        }
+
+        .site-topbar .container {
+            overflow: visible !important; /* 确保购物车下拉层不被裁剪 */
+        }
+
+        .site-topbar .topbar-cart:hover {
+            background: #fff;
+        }
+
+        .site-topbar .topbar-cart:hover a {
+            color: #ff6700; 
+        }
+        .site-topbar .topbar-cart .cart-svg-icon {
+            width: 20px;        
+            height: 16px;      
+            margin-right: 6px;   
+            vertical-align: middle; 
+            filter: invert(70%) grayscale(100%); 
+        }
+        .site-topbar .topbar-cart:hover .cart-svg-icon {
+            filter: invert(50%) sepia(100%) saturate(1000%) hue-rotate(350deg); 
         }
 
         /* 用户信息样式 */
@@ -119,25 +173,6 @@
             color: #fff;
         }
 
-        .site-topbar .topbar-cart:hover {
-            background: #fff;
-        }
-
-        .site-topbar .topbar-cart:hover a {
-            color: #ff6700; /* 小米橙色主色 */
-        }
-        .site-topbar .topbar-cart .cart-svg-icon {
-            width: 20px;          /* 图标宽度（和12px文字匹配，视觉协调） */
-            height: 16px;         /* 图标高度（保持宽高比，避免变形） */
-            margin-right: 6px;    /* 图标与文字的间距（不贴紧，更美观） */
-            vertical-align: middle; /* 让图标和文字垂直居中（关键！避免上下错位） */
-  /* 让图标默认颜色和文字一致（#b0b0b0），若SVG本身颜色不对可加滤镜调整 */
-            filter: invert(70%) grayscale(100%); /* 可选：将黑色SVG转为浅灰色（#b0b0b0） */
-        }
-/* 新增：购物车 hover 时，图标颜色同步变橙色（和文字匹配） */
-        .site-topbar .topbar-cart:hover .cart-svg-icon {
-            filter: invert(50%) sepia(100%) saturate(1000%) hue-rotate(350deg); /* 转为小米橙色 #ff6700 */
-        }
         .sub-header{
             height: 100px;
         }
@@ -918,7 +953,11 @@
                         <a href="#">
                             <img src="icon/icon-cart.svg" alt="购物车图标" class="cart-svg-icon">购物车 (0)
                         </a>
+                        <div class="cart-dropdown" id="cartDropdown">
+                            <p>购物车中还没有商品，赶紧选购吧！</p>
+                        </div>
                     </div>
+
 
                     <div id="J_siteUserInfo" class="topbar-info">
                         <a href="//www.mi.com/">登录</a><span class="sep">|</span>
@@ -1542,6 +1581,34 @@
 </body>
 
 <script>
+    const topbarCart = document.getElementById('J_minCartTrigger');
+    const cartDropdown = document.getElementById('cartDropdown');
+
+    // 显示下拉层（用类控制，配合CSS过渡）
+    function showDropdown() {
+        cartDropdown.classList.add('show');
+    }
+
+    // 隐藏下拉层
+    function hideDropdown() {
+        cartDropdown.classList.remove('show');
+    }
+
+    // 鼠标进入购物车 → 显示
+    topbarCart.addEventListener('mouseenter', showDropdown);
+
+    // 鼠标离开购物车 → 检查是否移入下拉层
+    topbarCart.addEventListener('mouseleave', (e) => {
+    // 若鼠标没有进入下拉层，才隐藏（避免快速移动时闪烁）
+    if (!cartDropdown.contains(e.relatedTarget)) {
+        hideDropdown();
+    }
+    });
+
+    // 鼠标离开下拉层 → 隐藏
+    cartDropdown.addEventListener('mouseleave', hideDropdown);
+
+
     function goToService() {
         window.location.href = "https://account.xiaomi.com/fe/service/login/password?_group=DEFAULT&sid=kfs_chat&qs=%253Fcallback%253Dhttps%25253A%25252F%25252Fchat.kefu.mi.com%25252Fsts%25253Fsign%25253DuBgqDQwpdhzadLvGiVL3oDAh78w%2525253D%252526followup%25253Dhttps%2525253A%2525252F%2525252Fchat.kefu.mi.com%2525252Fpage%2525252Findex%2525252Fv2%2525253Ftag%2525253Dcn%25252526token%2525253DY24jMTAwMSNjbi53ZWIubWkuaHR0cHMjZGVmYXVsdCNnb29kc0RldGFpbA%252525253D%252525253D%25252526groupId%2525253DP0%25252526closedshow%2525253D1%2526sid%253Dkfs_chat%2526_group%253DDEFAULT&callback=https%3A%2F%2Fchat.kefu.mi.com%2Fsts%3Fsign%3DuBgqDQwpdhzadLvGiVL3oDAh78w%253D%26followup%3Dhttps%253A%252F%252Fchat.kefu.mi.com%252Fpage%252Findex%252Fv2%253Ftag%253Dcn%2526token%253DY24jMTAwMSNjbi53ZWIubWkuaHR0cHMjZGVmYXVsdCNnb29kc0RldGFpbA%25253D%25253D%2526groupId%253DP0%2526closedshow%253D1&_sign=X82Fz0U6C2FhET0S1lQHhQystOU%3D&serviceParam=%7B%22checkSafePhone%22%3Afalse%2C%22checkSafeAddress%22%3Afalse%2C%22lsrp_score%22%3A0.0%7D&showActiveX=false&theme=&needTheme=false&bizDeviceType=&_locale=zh_CN";
     }
