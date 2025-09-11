@@ -191,6 +191,40 @@
         .sub-ht{
             height: 100px;
         }
+        .nav-item{
+            position: relative;
+            display: inline-block;
+        }
+        .dropdown-box {
+            height: 0;
+            padding: 0 20px; 
+            overflow: hidden; 
+            opacity: 0; 
+            
+            position: fixed; 
+            left: 0;
+            top: 140px;
+            width: 100vw; 
+            background-color: #fff; 
+            border-top: 1px solid #e0e0e0; 
+            border-bottom: 1px solid #f0f0f0;
+            border-left: none; 
+            border-right: none;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); 
+            z-index: 9999;
+            box-sizing: border-box;
+        
+            transition: all 0.5s ease;
+        }
+
+        .nav-item:hover .dropdown-box {
+            height: 200px; 
+            padding: 20px; 
+            opacity: 1; 
+        }
+
+
+
         .sub-header .menu-list{
             float: left;
             line-height: 100px;
@@ -235,7 +269,7 @@
             top: 0;
             right: 0;
             width: 52px;
-            height: 52px;
+            height: 50px;
             border: 1px solid #e0e0e0;
             background-color: #fff;
             color: #616161;
@@ -280,20 +314,73 @@
             cursor: pointer;
             transition: background-color 0.2s;
             position: relative;
-            list-style: none;
         }
         .slider .sidebar ul li::after {
-            content: ""; /* 伪元素必须有content属性 */
+            content: ""; 
             width: 8px;
             height: 8px;
-            border-top: 2px solid #fff; /* 箭头颜色（根据你的侧边栏文字颜色调整） */
+            border-top: 2px solid #fff; 
             border-right: 2px solid #fff;
             /* 箭头定位：靠右居中 */
             position: absolute;
-            right: 15px; /* 距离右侧的距离 */
-            top: 50%; /* 垂直居中 */
-            transform: translateY(-50%) rotate(45deg); /* 垂直居中+旋转（仅方案1需要） */
+            right: 15px; 
+            top: 50%; 
+            transform: translateY(-50%) rotate(45deg); 
         }
+        .dropdown {
+            display: none; 
+            position: absolute; 
+            left: 234px; 
+            top: 0;     
+            width: 500px; 
+            min-height: 460px; 
+            background-color: #fff; 
+            border: 1px solid #eee; 
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); 
+            z-index: 999; 
+            box-sizing: border-box;
+            padding: 20px; 
+        }
+        /* 下拉框内的网格布局容器 */
+        .dropdown-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* 两列等宽布局 */
+            gap: 20px; /* 项目之间的间距 */
+            padding: 10px;
+        }
+
+        /* 单个产品项（图片+文字） */
+        .grid-item {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            padding: 10px;
+            border-radius: 4px;
+        }
+
+        /* 产品项 hover 效果 */
+        .grid-item:hover {
+            background-color: #f5f5f5;
+        }
+        .grid-item span:hover{
+            color: #ff6700;
+        }
+
+        /* 产品项内的图片 */
+        .grid-item img {
+            width: 40px;
+            height: 40px;
+            object-fit: cover; /* 保持图片比例，防止变形 */
+            margin: 10px ;
+            border-radius: 4px;
+        }
+        /* 产品项内的文字 */
+        .grid-item span {
+            font-size: 14px;
+            color: #333;
+        }
+
         .slider .sidebar ul li:hover{
             background-color: #ff6700;
         }
@@ -302,10 +389,14 @@
         }
         .slider .sidebar ul li a{
             font-size: 14px;
-            color: #333;
+            color: #fff;
         }
         .slider .sidebar ul li a:hover{
-            color: #ff6700;
+            color: #fff;
+        }
+        /* 关键：鼠标悬浮在 <li> 上时，显示对应的下拉框 */
+        .slider .sidebar ul li:hover .dropdown {
+            display: block;
         }
 
         .slider .sd-img  {
@@ -316,9 +407,9 @@
             position: relative;
         }
         .slider .sd-img img {
-            width: 100%; /* 图片宽度=容器宽度 */
-            height: 100%; /* 图片高度=容器高度 */
-            object-fit: cover; /* 保持比例，裁剪多余部分（避免变形） */
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
         }
         .slider .sd-img::after{
             content: "";
@@ -974,7 +1065,10 @@
                         </a>
                     </div>
                     <div class="menu-list sub-ht">
-                        <a href="#" data-index="0" class="nav-item">Xiaomi手机</a>  
+                        <a href="#" data-index="0" class="nav-item">
+                            Xiaomi手机
+                            <div class="dropdown-box"></div>
+                        </a>  
                         <a href="#" data-index="1" class="nav-item">REDMI手机</a>
                         <a href="#" data-index="2" class="nav-item">电视</a>
                         <a href="#" data-index="3" class="nav-item">笔记本</a>
@@ -984,6 +1078,7 @@
                         <a href="#" data-index="7" class="nav-item">服务中心</a>
                         <a href="#" data-index="8" class="nav-item">社区</a>
                     </div>
+                    
                     <div class="search">
                         <div class="search-form">
                             <input type="text" class="search-text" placeholder="搜索商品">
@@ -1004,7 +1099,43 @@
             <div class="container">
                 <div class="sidebar">
                     <ul>
-                        <li>手机</li>
+                        <li>
+                            手机
+                            <div class="dropdown">
+                                <div class="dropdown-content">
+                                    <div class="dropdown-grid">
+                                        <div class="grid-item">
+                                            <a href="https://www.mi.com/shop"><img src="icon/xiaomi MIX系列.png" alt="Xiaomi 数字旗舰"></a>
+                                            <span>Xiaomi MIX系列</span>
+                                        </div>
+                                        <div class="grid-item">
+                                            <a href="https://www.mi.com/shop"><img src="icon/xiaomi MIX系列.png" alt="Xiaomi 数字旗舰"></a>
+                                            <span>Xiaomi MIX系列</span>
+                                        </div>
+                                        <div class="grid-item">
+                                            <a href="https://www.mi.com/shop"><img src="icon/xiaomi MIX系列.png" alt="Xiaomi 数字旗舰"></a>
+                                            <span>Xiaomi MIX系列</span>
+                                        </div>
+                                        <div class="grid-item">
+                                            <a href="https://www.mi.com/shop"><img src="icon/xiaomi MIX系列.png" alt="Xiaomi 数字旗舰"></a>
+                                            <span>Xiaomi MIX系列</span>
+                                        </div>
+                                        <div class="grid-item">
+                                            <a href="https://www.mi.com/shop"><img src="icon/xiaomi MIX系列.png" alt="Xiaomi 数字旗舰"></a>
+                                            <span>Xiaomi MIX系列</span>
+                                        </div>
+                                        <div class="grid-item">
+                                            <a href="https://www.mi.com/shop"><img src="icon/xiaomi MIX系列.png" alt="Xiaomi 数字旗舰"></a>
+                                            <span>Xiaomi MIX系列</span>
+                                        </div>
+                                        <div class="grid-item">
+                                            <a href="https://www.mi.com/shop"><img src="icon/xiaomi MIX系列.png" alt="Xiaomi 数字旗舰"></a>
+                                            <span>Xiaomi MIX系列</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
                         <li>电视</li>
                         <li>家电</li>
                         <li>笔记本 平板 显示器</li>
