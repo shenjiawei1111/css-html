@@ -40,7 +40,6 @@
         .container {
             width: 1226px;
             margin: 0 auto;
-            overflow: hidden;
         }
 
         .site-topbar .topbar-nav {
@@ -223,6 +222,58 @@
             opacity: 1; 
         }
 
+        /* 产品列表：横向 Flex 布局 */
+        .product-list {
+            display: flex;
+            justify-content: space-between; /* 项目之间均匀分布 */
+            align-items: flex-start;
+            flex-wrap: nowrap; 
+            gap: 10px;
+        }
+
+        /* 单个产品项：居中对齐+宽度分配 */
+        .product-item {
+            text-align: center;
+            width: calc(100% / 6 - 10px); /* 6个项目均分宽度，减去间距 */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 10px;
+            position: relative;
+        }
+
+        .product-item:not(:last-child)::after {
+            content: ""; 
+            position: absolute;
+            right: 0;    
+            top: 0px;   
+            bottom: 50px;
+            width: 0.5px;  
+            background-color: #e0e0e0; 
+        }
+
+        /* 产品图片：自适应+居中 */
+        .product-item img {
+            width: 100%;
+            max-width: 100px; /* 限制图片最大宽度 */
+            height: 100px;
+            display: block;
+        }
+
+        /* 产品名称：样式 */
+        .product-name {
+            font-size: 14px;
+            color: #333;
+            line-height: 1.2;
+        }
+
+        /* 产品价格：橙色高亮 */
+        .product-price {
+            font-size: 14px;
+            color: #ff6700; /* 小米品牌橙色 */
+            line-height: 1.2;
+        }
 
 
         .sub-header .menu-list{
@@ -261,9 +312,6 @@
             outline: none;
             transition: all 0.2s;
         }
-        .search-text:focus {
-            border-color: #ff6700;
-        }
         .search-btn {
             position: absolute;
             top: 0;
@@ -278,9 +326,63 @@
             cursor: pointer;
             transition: all 0.2s;
         }
+
+        /* 搜索下拉框：绝对定位在搜索框下方，初始隐藏 */
+        .search-dropdown {
+            position: absolute;
+            top: 50px;        /* 与搜索框高度一致，位于下方 */
+            left: 0;          /* 与搜索框左对齐 */
+            width: 245px;     /* 匹配输入框宽度（含内边距） */
+            border: 1px solid #e0e0e0; /* 浅灰色边框 */
+            background-color: #fff;    /* 白色背景 */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* 轻微阴影增强层次 */
+            display: none;    /* 初始隐藏 */
+            z-index: 9999;      /* 确保在其他元素上层 */
+        }
+        /* 热门关键词列表：清除默认样式，设置行高与 hover 效果 */
+        .hot-words-list {
+            list-style: none; /* 清除列表默认圆点 */
+            padding: 0;
+            margin: 0;
+        }
+        .hot-words-list li {
+            padding: 10px;         /* 上下左右内边距 */
+            font-size: 14px;       /* 文字大小 */
+            cursor: pointer;       /* 鼠标悬浮为“手型”，提示可点击 */
+            transition: background-color 0.2s; /* hover 背景过渡动画 */
+        }
+        .search-form {
+            position: relative; /* 伪元素的定位基准 */
+            width: 296px;
+            height: 50px;
+        }
+
+        .hot-words-list li:hover {
+            background-color: #f5f5f5; /* hover 时背景浅灰 */
+        }
+        .search-text:hover {
+            border-color: #757575;
+        }
+        .search-text:hover + .search-btn{
+            border-color: #757575;
+        }
         .search-btn:hover {
             background-color: #ff6700;
             color: #fff;
+            border-color: #ff6700;
+        }
+        /* 聚焦时：输入框整体边框变橙 + 右边框强制变橙（避免被覆盖） */
+        .search-form.focused .search-text {
+            border-color: #ff6700;
+            border-right-color: #ff6700 !important; /* 强制右边框变色 */
+        }
+
+        /* 聚焦时：按钮整体边框变橙 + 左边框强制变橙（与输入框右边框衔接） */
+        .search-form.focused .search-btn {
+            border-color: #ff6700;
+            border-left-color: #ff6700 !important; /* 强制左边框变色 */
+        }
+        .search-form.focused .search-dropdown {
             border-color: #ff6700;
         }
 
@@ -1067,7 +1169,48 @@
                     <div class="menu-list sub-ht">
                         <a href="#" data-index="0" class="nav-item">
                             Xiaomi手机
-                            <div class="dropdown-box"></div>
+                            <div class="dropdown-box">
+                                <div class="container">
+                                    <div class="product-list">
+                                    <!-- 产品项 1 -->
+                                    <div class="product-item">
+                                        <img src="/icon/xiaomi15.png" alt="Xiaomi MIX Flip 2">
+                                        <p class="product-name">Xiaomi MIX Flip 2</p>
+                                        <p class="product-price">5999元起</p>
+                                    </div>
+                                    <!-- 产品项 2 -->
+                                    <div class="product-item">
+                                        <img src="/icon/xiaomi15.png" alt="Xiaomi 15S Pro">
+                                        <p class="product-name">Xiaomi 15S Pro</p>
+                                        <p class="product-price">5499元起</p>
+                                    </div>
+                                    <!-- 产品项 3 -->
+                                    <div class="product-item">
+                                        <img src="/icon/xiaomi15.png" alt="Xiaomi Civi 5 Pro">
+                                        <p class="product-name">Xiaomi Civi 5 Pro</p>
+                                        <p class="product-price">2999元起</p>
+                                    </div>
+                                    <!-- 产品项 4 -->
+                                    <div class="product-item">
+                                        <img src="/icon/xiaomi15.png" alt="Xiaomi 15 Ultra">
+                                        <p class="product-name">Xiaomi 15 Ultra</p>
+                                        <p class="product-price">6499元起</p>
+                                    </div>
+                                    <!-- 产品项 5 -->
+                                    <div class="product-item">
+                                        <img src="/icon/xiaomi15.png" alt="Xiaomi 15">
+                                        <p class="product-name">Xiaomi 15</p>
+                                        <p class="product-price">4199元起</p>
+                                    </div>
+                                    <!-- 产品项 6 -->
+                                    <div class="product-item">
+                                        <img src="/icon/xiaomi15.png" alt="Xiaomi 15 Pro">
+                                        <p class="product-name">Xiaomi 15 Pro</p>
+                                        <p class="product-price">4999元起</p>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
                         </a>  
                         <a href="#" data-index="1" class="nav-item">REDMI手机</a>
                         <a href="#" data-index="2" class="nav-item">电视</a>
@@ -1085,7 +1228,19 @@
                             <button class="search-btn">
                                 <img src="icon/搜索.png" alt="" class="search-photo">
                             </button>
-                            
+                        <!-- 新增：下拉列表容器 -->
+                            <div class="search-dropdown">
+                                <ul class="hot-words-list">
+                                    <li>手机换新</li>
+                                    <li>充电宝</li>
+                                    <li>小米手环10 nfc版</li>
+                                    <li>耳机</li>
+                                    <li>空调</li>
+                                    <li>Redmi K80</li>
+                                    <li>洗衣机</li>
+                                    <li>冰箱</li>
+                                </ul>
+                            </div>
                             <div class="search-hot-words">
                             </div>
                         </div>
@@ -1712,6 +1867,36 @@
 </body>
 
 <script>
+    // 补充聚焦时添加/移除类名的逻辑（整合到现有JS中）
+    const searchText = document.querySelector('.search-text');
+    const searchDropdown = document.querySelector('.search-dropdown');
+    const hotItems = document.querySelectorAll('.hot-words-list li');
+    const searchForm = document.querySelector('.search-form'); // 新增：获取表单容器
+
+    // 输入框聚焦 → 显示下拉框 + 添加强制橙色类
+    searchText.addEventListener('focus', function() {
+        searchDropdown.style.display = 'block';
+        searchForm.classList.add('focused'); // 聚焦时添加类，触发橙色边框
+    });
+
+    // 输入框失焦 → 隐藏下拉框 + 移除橙色类 
+    searchText.addEventListener('blur', function() {
+        setTimeout(() => {
+            searchDropdown.style.display = 'none';
+            searchForm.classList.remove('focused'); // 失焦时移除类，恢复默认/悬停样式
+        }, 200);
+    });
+
+    // 下拉项点击逻辑（保持不变）
+    hotItems.forEach(item => {
+        item.addEventListener('click', function() {
+            searchText.value = this.textContent;
+            document.querySelector('.search-btn').click();
+        });
+    });
+
+
+
     const topbarCart = document.getElementById('J_minCartTrigger');
     const cartDropdown = document.getElementById('cartDropdown');
 
