@@ -106,6 +106,9 @@
             visibility: hidden;
             transform: translateY(10px); 
             transition: all .3s ease;
+            display: flex;
+            align-items: center; /* 垂直居中 */
+            justify-content: center; /* 水平居中 */
         }
 
         .site-topbar .container {
@@ -303,7 +306,7 @@
             position: absolute;
             top: 0;
             right: 51px;
-            width: 245px;
+            width: 243px;
             height: 50px;
             padding: 0 10px;
             border: 1px solid #e0e0e0;
@@ -331,8 +334,8 @@
         .search-dropdown {
             position: absolute;
             top: 50px;        /* 与搜索框高度一致，位于下方 */
-            left: 0;          /* 与搜索框左对齐 */
-            width: 245px;     /* 匹配输入框宽度（含内边距） */
+            left: 2px;          /* 与搜索框左对齐 */
+            width: 243px;     /* 匹配输入框宽度（含内边距） */
             border: 1px solid #e0e0e0; /* 浅灰色边框 */
             background-color: #fff;    /* 白色背景 */
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* 轻微阴影增强层次 */
@@ -403,6 +406,7 @@
             background-color: rgba(0, 0, 0, 0.7);
             color: #fff;
             height: 460px; /* 可根据轮播图高度调整 */
+            margin-bottom: 10px;
         }
 
         .slider .sidebar ul{
@@ -412,7 +416,7 @@
         }
         .slider .sidebar ul li{
 
-            padding: 15px 40px 15px 20px;
+            padding: 12.5px 40px 12.5px 20px;
             cursor: pointer;
             transition: background-color 0.2s;
             position: relative;
@@ -596,6 +600,26 @@
             filter: brightness(1);
         }
 
+        /* 统一选中.grid-container下的所有直接子元素（不管类名是item2/3/4） */
+        .grid-container > a {
+            /* 基础过渡动画：控制位移和阴影的变化过程 */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* 初始轻微阴影 */
+        }
+
+        /* 鼠标悬浮时：统一应用浮起和阴影增强效果 */
+        .grid-container > a:hover {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* 增强阴影，突出悬浮感 */
+        }
+
+        /* 统一设置子元素内图片的样式（避免变形） */
+        .grid-container > div img {
+            width: 100%;
+            height: auto; /* 自动保持宽高比 */
+            display: block; /* 消除图片底部默认间隙 */
+        }
+
+
         .body1{
             background-color: #f5f5f5;
             padding: 10px 0;
@@ -738,6 +762,14 @@
             background: #fff;
             border-radius: 4px;
             overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transform: translateY(0);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        /* 鼠标悬浮时：浮起效果 + 增强阴影 */
+        .large-block:hover {
+            transform: translateY(-2px); /* 向上浮起5px（可调整） */
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); /* 增强阴影，突出立体感 */
         }
         .large-block .inner {
             width: 100%;
@@ -767,6 +799,14 @@
             background: #fff;
             border-radius: 4px;
             overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transform: translateY(0);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        /* 鼠标悬浮时：浮起效果 + 增强阴影 */
+        .small-block:hover {
+            transform: translateY(-2px); /* 向上浮起5px（可调整） */
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); /* 增强阴影，突出立体感 */
         }
         .small-block .inner {
             width: 100%;
@@ -860,6 +900,13 @@
             background: #fff;
             border-radius: 4px;
             overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transform: translateY(0);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        .large-block2:hover {
+            transform: translateY(-2px); /* 向上浮起5px（可调整） */
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); /* 增强阴影，突出立体感 */
         }
         .large-block2 .inner {
             width: 100%;
@@ -1050,15 +1097,15 @@
         .fixed-sidebar {
             position: fixed;         
             right: 0;                
-            top: 50%;                
-            transform: translateY(-50%);
+            top: 26%;
+            width:82px;                
             display: flex;
             flex-direction: column;  
             align-items: center;     
             background-color: #fff;  
             border: 1px solid #e0e0e0; 
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); 
-            z-index: 999;            
+            z-index: 9999;            
             padding: 10px 0;         
         }
 
@@ -1070,11 +1117,6 @@
             padding: 15px;
             cursor: pointer;         /* 鼠标悬浮为手型，暗示可点击 */
             transition: color 0.3s ease; /* hover 过渡动画 */
-        }
-
-        /* hover 效果（类似小米的橙色强调） */
-        .fixed-item:hover {
-            color: #ff6700; /* 小米品牌橙色 */
         }
 
         /* 图标样式（可替换为字体图标或背景图） */
@@ -1089,11 +1131,57 @@
         }
 
         .fixed-item span {
-            color: #757575;
-            font-size: 14px;
+            color: #333;
+            font-size: 12px;
             transition: color 0.3s ease;
         }
         .fixed-item:hover span {
+            color: #ff6700;
+        }
+
+                /* 右侧悬浮栏整体容器 */
+        .fixed-sidebar1 {
+            position: fixed;         
+            right: 0;                
+            top: 78%;
+            width: 82px;        
+            display: flex;
+            flex-direction: column;  
+            align-items: center;     
+            background-color: #fff;  
+            border: 1px solid #e0e0e0; 
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); 
+            z-index: 999;            
+            padding: 10px 0;         
+        }
+
+        /* 悬浮栏的每个可点击项 */
+        .fixed-item1 {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px;
+            cursor: pointer;         /* 鼠标悬浮为手型，暗示可点击 */
+            transition: color 0.3s ease; /* hover 过渡动画 */
+        }
+
+        /* 图标样式（可替换为字体图标或背景图） */
+        .fixed-item1 i {
+            width: 24px;
+            height: 24px;
+            margin-bottom: 8px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            transition: background-image 0.3s ease;
+        }
+        .fixed-item1 span {
+            color: #333;
+            font-size: 12px;
+            transition: color 0.3s ease;
+        }
+
+        .fixed-item1:hover span {
             color: #ff6700;
         }
 
@@ -1113,12 +1201,11 @@
         .icon-cart {
             background-image: url("icon/互动聊天-on.svg");
         }
-
-        /* 文字样式 */
-        .fixed-item span {
-            font-size: 12px;
-            color: #333;
+        .icon-huidingbu {
+            background-image: url("icon/回顶部.svg");
         }
+
+        
 
     </style>
     
@@ -1336,15 +1423,21 @@
                         <span>保障服务</span>
                     </div>
                 </div>
-                <div class="item2">
-                    <img src="icon/xiaomi15.png" alt="">
-                </div>
-                <div class="item3">
-                    <img src="icon/redme电视.png" alt="">
-                </div>
-                <div class="item4">
-                    <img src="icon/小米手表.png" alt="">
-                </div>
+                <a href="https://www.mi.com/shop">
+                    <div class="item2">
+                        <img src="icon/xiaomi15.png" alt="">
+                    </div>
+                </a>
+                <a href="https://www.mi.com/shop">
+                    <div class="item3">
+                        <img src="icon/redme电视.png" alt="">
+                    </div>
+                </a>
+                <a href="https://www.mi.com/shop">
+                    <div class="item4">
+                        <img src="icon/小米手表.png" alt="">
+                    </div>
+                </a>
                 </div>
             </div>
         </div>
@@ -1475,7 +1568,7 @@
                         <div class="inner">
                             <img src="icon/xiaomi耳机pro.png" alt="">
                             <h3 class="small-block-text">Xiaomi 开放式耳机 Pro</h3>
-                            <p class="small-block-text-2">人体工学设计，三点支撑，贴合不压耳</p>
+                            <p class="small-block-text-2-2">人体工学设计，三点支撑，贴合不压耳 | 0.6mm超纤细柔性记忆钛丝 | 行业首发开放式五单元声学系统</p>
                             <p class="small-block-text-3">999元起</p>
                         </div>
                     </div>
@@ -1483,7 +1576,7 @@
                         <div class="inner">
                             <img src="icon/xiaomi耳机pro.png" alt="">
                             <h3 class="small-block-text">Xiaomi 开放式耳机 Pro</h3>
-                            <p class="small-block-text-2">人体工学设计，三点支撑，贴合不压耳</p>
+                            <p class="small-block-text-2-2">人体工学设计，三点支撑，贴合不压耳 | 0.6mm超纤细柔性记忆钛丝 | 行业首发开放式五单元声学系统</p>
                             <p class="small-block-text-3">999元起</p>
                         </div>
                     </div>
@@ -1491,7 +1584,7 @@
                         <div class="inner">
                             <img src="icon/xiaomi耳机pro.png" alt="">
                             <h3 class="small-block-text">Xiaomi 开放式耳机 Pro</h3>
-                            <p class="small-block-text-2">人体工学设计，三点支撑，贴合不压耳</p>
+                            <p class="small-block-text-2-2">人体工学设计，三点支撑，贴合不压耳 | 0.6mm超纤细柔性记忆钛丝 | 行业首发开放式五单元声学系统</p>
                             <p class="small-block-text-3">999元起</p>
                         </div>
                     </div>
@@ -1501,7 +1594,7 @@
                         <div class="inner">
                             <img src="icon/xiaomi耳机pro.png" alt="">
                             <h3 class="small-block-text">Xiaomi 开放式耳机 Pro</h3>
-                            <p class="small-block-text-2">人体工学设计，三点支撑，贴合不压耳</p>
+                            <p class="small-block-text-2-2">人体工学设计，三点支撑，贴合不压耳 | 0.6mm超纤细柔性记忆钛丝 | 行业首发开放式五单元声学系统</p>
                             <p class="small-block-text-3">999元起</p>
                         </div>
                     </div>
@@ -1509,7 +1602,7 @@
                         <div class="inner">
                             <img src="icon/xiaomi耳机pro.png" alt="">
                             <h3 class="small-block-text">Xiaomi 开放式耳机 Pro</h3>
-                            <p class="small-block-text-2">人体工学设计，三点支撑，贴合不压耳</p>
+                            <p class="small-block-text-2-2">人体工学设计，三点支撑，贴合不压耳 | 0.6mm超纤细柔性记忆钛丝 | 行业首发开放式五单元声学系统</p>
                             <p class="small-block-text-3">999元起</p>
                         </div>
                     </div>
@@ -1517,7 +1610,7 @@
                         <div class="inner">
                             <img src="icon/xiaomi耳机pro.png" alt="">
                             <h3 class="small-block-text">Xiaomi 开放式耳机 Pro</h3>
-                            <p class="small-block-text-2">人体工学设计，三点支撑，贴合不压耳</p>
+                            <p class="small-block-text-2-2">人体工学设计，三点支撑，贴合不压耳 | 0.6mm超纤细柔性记忆钛丝 | 行业首发开放式五单元声学系统</p>
                             <p class="small-block-text-3">999元起</p>
                         </div>
                     </div>
@@ -1525,7 +1618,7 @@
                         <div class="inner">
                             <img src="icon/xiaomi耳机pro.png" alt="">
                             <h3 class="small-block-text">Xiaomi 开放式耳机 Pro</h3>
-                            <p class="small-block-text-2">人体工学设计，三点支撑，贴合不压耳</p>
+                            <p class="small-block-text-2-2">人体工学设计，三点支撑，贴合不压耳 | 0.6mm超纤细柔性记忆钛丝 | 行业首发开放式五单元声学系统</p>
                             <p class="small-block-text-3">999元起</p>
                         </div>
                     </div>
@@ -1864,69 +1957,227 @@
             <span>购物车</span>
         </div>
     </div>
+
+    <div class="fixed-sidebar1">
+        <div class="fixed-item1">
+            <i class="icon-huidingbu"></i>
+            <span>回顶部</span>
+        </div>
+    </div>
+
 </body>
 
 <script>
-    // 补充聚焦时添加/移除类名的逻辑（整合到现有JS中）
-    const searchText = document.querySelector('.search-text');
-    const searchDropdown = document.querySelector('.search-dropdown');
-    const hotItems = document.querySelectorAll('.hot-words-list li');
-    const searchForm = document.querySelector('.search-form'); // 新增：获取表单容器
+    // 搜索框交互功能 （1）处理搜索框聚焦/失焦事件 （2）显示/隐藏搜索下拉框 （3）点击下拉项自动填充并提交搜索
+    function initSearchFunctionality() {
+        const searchText = document.querySelector('.search-text');
+        const searchDropdown = document.querySelector('.search-dropdown');
+        const hotItems = document.querySelectorAll('.hot-words-list li');
+        const searchForm = document.querySelector('.search-form');
 
-    // 输入框聚焦 → 显示下拉框 + 添加强制橙色类
-    searchText.addEventListener('focus', function() {
-        searchDropdown.style.display = 'block';
-        searchForm.classList.add('focused'); // 聚焦时添加类，触发橙色边框
-    });
-
-    // 输入框失焦 → 隐藏下拉框 + 移除橙色类 
-    searchText.addEventListener('blur', function() {
-        setTimeout(() => {
-            searchDropdown.style.display = 'none';
-            searchForm.classList.remove('focused'); // 失焦时移除类，恢复默认/悬停样式
-        }, 200);
-    });
-
-    // 下拉项点击逻辑（保持不变）
-    hotItems.forEach(item => {
-        item.addEventListener('click', function() {
-            searchText.value = this.textContent;
-            document.querySelector('.search-btn').click();
+        // 输入框聚焦 → 显示下拉框 + 添加强制橙色类
+        searchText.addEventListener('focus', function() {
+            searchDropdown.style.display = 'block';
+            searchForm.classList.add('focused');
         });
+
+        // 输入框失焦 → 隐藏下拉框 + 移除橙色类 
+        searchText.addEventListener('blur', function() {
+            setTimeout(() => {
+                searchDropdown.style.display = 'none';
+                searchForm.classList.remove('focused');
+            }, 200);
+        });
+
+        // 下拉项点击逻辑：填充内容并提交搜索
+        hotItems.forEach(item => {
+            item.addEventListener('click', function() {
+                searchText.value = this.textContent;
+                document.querySelector('.search-btn').click();
+            });
+        });
+    }
+    // 初始化搜索框功能
+    initSearchFunctionality();
+
+    // 功能：监听搜索框输入并防抖，停止输入后打印内容到控制台，同时过滤下拉选项
+    // 防抖作用：避免连续输入高频执行逻辑，仅停止输入后执行一次，优化性能
+    function initSearchWithDebounce() {
+        const searchText = document.querySelector('.search-text');
+        const hotItems = document.querySelectorAll('.hot-words-list li');
+        
+        // 定义防抖函数（复用性更高）
+        function debounce(fn, delay) {
+            let timer = null; // 存储定时器
+            return function() {
+                // 清除上一次的定时器（关键：重置延迟）
+                if (timer !== null) {
+                    clearTimeout(timer);
+                }
+                // 保存当前上下文（输入框元素）和参数
+                const context = this;
+                const args = arguments;
+                
+                // 延迟执行函数
+                timer = setTimeout(() => {
+                    // 用call确保函数内的this指向输入框
+                    fn.call(context, ...args);
+                }, delay);
+            };
+        }
+
+        // 实时处理函数：同时处理过滤和控制台打印
+        function handleInput() {
+            const keyword = this.value; // 获取当前输入值
+            
+            // 1. 控制台打印（观察防抖效果）
+            console.log('防抖后执行：', keyword);
+            
+            // 2. 原有过滤下拉项逻辑（保持不变）
+            const lowerKeyword = keyword.toLowerCase().trim();
+            hotItems.forEach(item => {
+                const itemText = item.textContent.toLowerCase();
+                item.style.display = (lowerKeyword === '' || itemText.includes(lowerKeyword)) 
+                    ? 'block' 
+                    : 'none';
+            });
+        }
+
+        // 给输入框绑定带防抖的输入事件（延迟500ms，可调整）
+        searchText.addEventListener('input', debounce(handleInput, 500));
+
+        // 初始化显示所有选项
+        handleInput.call(searchText); // 手动绑定this为输入框
+    }
+    // 页面加载后初始化
+    document.addEventListener('DOMContentLoaded', initSearchWithDebounce);
+
+
+    // 购物车及服务功能 （1）购物车下拉层显示/隐藏逻辑 （2）鼠标交互处理避免闪烁 （3）服务页面跳转功能
+    function initCartAndService() {
+        const topbarCart = document.getElementById('J_minCartTrigger');
+        const cartDropdown = document.getElementById('cartDropdown');
+
+        // 显示下拉层（用类控制，配合CSS过渡）
+        function showDropdown() {
+            cartDropdown.classList.add('show');
+        }
+
+        // 隐藏下拉层
+        function hideDropdown() {
+            cartDropdown.classList.remove('show');
+        }
+
+        // 鼠标进入购物车 → 显示
+        topbarCart.addEventListener('mouseenter', showDropdown);
+
+        // 鼠标离开购物车 → 检查是否移入下拉层
+        topbarCart.addEventListener('mouseleave', (e) => {
+            // 若鼠标没有进入下拉层，才隐藏（避免快速移动时闪烁）
+            if (!cartDropdown.contains(e.relatedTarget)) {
+                hideDropdown();
+            }
+        });
+
+        // 鼠标离开下拉层 → 隐藏
+        cartDropdown.addEventListener('mouseleave', hideDropdown);
+
+        // 服务页面跳转
+        function goToService() {
+            window.location.href = "https://account.xiaomi.com/";
+        }
+    }
+
+    // 初始化购物车及服务功能
+    initCartAndService();
+
+
+
+    // 右侧便签动画 （1）滚动出现回到顶部图标 （2）点击回到顶部
+    document.addEventListener('DOMContentLoaded', function() {
+        // 获取两个侧边栏元素
+        const fixedSidebar = document.querySelector('.fixed-sidebar');
+        const fixedSidebar1 = document.querySelector('.fixed-sidebar1');
+        
+        // 处理滚动事件的函数
+        function handleScroll() {
+            // 获取页面总高度（文档高度）
+            const totalHeight = Math.max(
+                document.body.scrollHeight,
+                document.body.offsetHeight,
+                document.documentElement.clientHeight,
+                document.documentElement.scrollHeight,
+                document.documentElement.offsetHeight
+            );
+            
+            // 获取当前滚动高度
+            const scrollTop = window.scrollY;
+            
+            // 计算页面总高度的三分之一
+            const oneThirdHeight = totalHeight / 3;
+            
+            // 根据滚动高度设置样式
+            if (scrollTop > oneThirdHeight) {
+                // 滚动高度大于三分之一时
+                fixedSidebar1.style.display = 'flex';
+                fixedSidebar.style.top = '26%';  
+            } else {
+                // 滚动高度小于等于三分之一时
+                fixedSidebar1.style.display = 'none';  // 隐藏fixed-sidebar1
+                fixedSidebar.style.top = '40%';        // 设置fixed-sidebar的top为40%
+            }
+
+            // 2. 获取“回顶部”按钮容器（.fixed-item1，点击整个项都触发）
+            const backToTopBtn = document.querySelector('.fixed-sidebar1 .fixed-item1');
+            
+            // 3. 给按钮添加点击事件
+            backToTopBtn.addEventListener('click', function() {
+                // 4. 控制页面平滑滚动到顶部
+                window.scrollTo({
+                    top: 0,                // 滚动目标位置：页面最顶端（垂直距离 0）
+                    behavior: 'smooth'     // 滚动方式：平滑滚动（可选，删除则为瞬间跳转）
+                });
+            });
+        }
+        // 初始加载时执行一次，设置初始状态
+        handleScroll();
+        // 监听滚动事件
+        window.addEventListener('scroll', handleScroll);
     });
 
 
-
-    const topbarCart = document.getElementById('J_minCartTrigger');
-    const cartDropdown = document.getElementById('cartDropdown');
-
-    // 显示下拉层（用类控制，配合CSS过渡）
-    function showDropdown() {
-        cartDropdown.classList.add('show');
+        // 1. 定义通用节流函数
+    // 功能：控制函数在指定时间间隔内只执行一次
+    function throttle(fn, interval) {
+        let lastTime = 0; // 记录上一次执行的时间
+        return function() {
+            const now = Date.now(); // 获取当前时间
+            const context = this; // 保存当前上下文（如触发事件的元素）
+            const args = arguments; // 保存事件参数
+            
+            // 如果当前时间 - 上一次执行时间 >= 间隔时间，才执行函数
+            if (now - lastTime >= interval) {
+                fn.call(context, ...args); // 执行函数并绑定this
+                lastTime = now; // 更新上一次执行时间
+            }
+        };
     }
 
-    // 隐藏下拉层
-    function hideDropdown() {
-        cartDropdown.classList.remove('show');
+    // 2. 定义需要被节流控制的业务函数（示例：打印滚动位置）
+    function handleScroll() {
+        // 打印当前滚动距离顶部的位置
+        console.log('滚动位置：', window.scrollY);
+        
     }
 
-    // 鼠标进入购物车 → 显示
-    topbarCart.addEventListener('mouseenter', showDropdown);
+    // 3. 给页面滚动事件绑定节流处理（每300ms最多执行一次）
+    window.addEventListener('scroll', throttle(handleScroll, 500));
 
-    // 鼠标离开购物车 → 检查是否移入下拉层
-    topbarCart.addEventListener('mouseleave', (e) => {
-    // 若鼠标没有进入下拉层，才隐藏（避免快速移动时闪烁）
-    if (!cartDropdown.contains(e.relatedTarget)) {
-        hideDropdown();
+    // 4. 可选：窗口大小调整事件也适合用节流（每500ms执行一次）
+    function handleResize() {
+        console.log('窗口宽度：', window.innerWidth);
     }
-    });
+    window.addEventListener('resize', throttle(handleResize, 500));
 
-    // 鼠标离开下拉层 → 隐藏
-    cartDropdown.addEventListener('mouseleave', hideDropdown);
-
-
-    function goToService() {
-        window.location.href = "https://account.xiaomi.com/fe/service/login/password?_group=DEFAULT&sid=kfs_chat&qs=%253Fcallback%253Dhttps%25253A%25252F%25252Fchat.kefu.mi.com%25252Fsts%25253Fsign%25253DuBgqDQwpdhzadLvGiVL3oDAh78w%2525253D%252526followup%25253Dhttps%2525253A%2525252F%2525252Fchat.kefu.mi.com%2525252Fpage%2525252Findex%2525252Fv2%2525253Ftag%2525253Dcn%25252526token%2525253DY24jMTAwMSNjbi53ZWIubWkuaHR0cHMjZGVmYXVsdCNnb29kc0RldGFpbA%252525253D%252525253D%25252526groupId%2525253DP0%25252526closedshow%2525253D1%2526sid%253Dkfs_chat%2526_group%253DDEFAULT&callback=https%3A%2F%2Fchat.kefu.mi.com%2Fsts%3Fsign%3DuBgqDQwpdhzadLvGiVL3oDAh78w%253D%26followup%3Dhttps%253A%252F%252Fchat.kefu.mi.com%252Fpage%252Findex%252Fv2%253Ftag%253Dcn%2526token%253DY24jMTAwMSNjbi53ZWIubWkuaHR0cHMjZGVmYXVsdCNnb29kc0RldGFpbA%25253D%25253D%2526groupId%253DP0%2526closedshow%253D1&_sign=X82Fz0U6C2FhET0S1lQHhQystOU%3D&serviceParam=%7B%22checkSafePhone%22%3Afalse%2C%22checkSafeAddress%22%3Afalse%2C%22lsrp_score%22%3A0.0%7D&showActiveX=false&theme=&needTheme=false&bizDeviceType=&_locale=zh_CN";
-    }
 </script>
 </html>
